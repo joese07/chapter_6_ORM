@@ -20,12 +20,14 @@ router.get("/gameusers/create", (req, res) => {
 });
 
 router.get("/gameusers", (req, res) => {
+  const alertSuccess = req.flash("alertSuccess");
   Gameuser.findAll({
     order: [["name", "ASC"]],
   }).then((gameusers) => {
     res.render("pages/users/index", {
       pageTitle: " Daftar Biodata Table User",
       gameusers,
+      alertSuccess,
     });
   });
 });
@@ -84,6 +86,7 @@ router.put("/gameusers/:id", (req, res) => {
       },
     }
   ).then(() => {
+    req.flash("alertSuccess", "Berhasil mengubah data game user");
     res.redirect("/gameusers");
   });
 });
@@ -104,6 +107,7 @@ router.post("/gameuser", (req, res) => {
     email: req.body.email,
     phoneNumber: req.body.no_telepon,
   }).then(() => {
+    req.flash("alertSuccess"," Berhasil tambah data game user")
     res.redirect("/gameusers");
   });
 });
@@ -130,6 +134,7 @@ router.delete("/gameusers/:id", (req, res) => {
       id: req.params.id,
     },
   }).then(() => {
+    req.flash("alertSuccess","Berhasil menghapus data game user")
     res.redirect("back");
   });
 });
@@ -145,12 +150,15 @@ router.get("/histories/create", (req, res) => {
 });
 
 router.get("/histories", (req, res) => {
+  const alertSuccess = req.flash("alertSuccess");
+
   Historiesuser.findAll({
     include: ["gameuser"],
   }).then((historiusers) => {
     res.render("pages/history/index", {
       pageTitle: "Daftar table History",
       historiusers,
+      alertSuccess,
     });
   });
 });
@@ -180,6 +188,7 @@ router.post("/histories", (req, res) => {
     level: req.body.level,
     joinDate,
   }).then(() => {
+    req.flash("alertSuccess","Berhasil membuat Histori game user");
     res.redirect("/histories");
   });
 });
@@ -216,6 +225,7 @@ router.put("/histories/:id", (req, res) => {
       },
     }
   ).then(() => {
+    req.flash("alertSuccess","Berhasil mengubah data ");
     res.redirect("/histories");
   });
 });
@@ -226,6 +236,7 @@ router.delete("/histories/:id", (req, res) => {
       id: req.params.id,
     },
   }).then(() => {
+    req.flash("alertSuccess","berhasil hapus data");
     res.redirect("back");
   });
 });
