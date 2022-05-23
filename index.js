@@ -40,15 +40,22 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const email = "joese@gmail.com";
-  const password = "admin123";
+  Adminuser.findOne({
+    where: {
+      email: req.body.email,
+      password: req.body.password,
+    },
+  }).then((user) => {
+    if (!user) {
+      res.end(" invalid email or password ");
+    }
 
-  if (req.body.email === email && req.body.password === password) {
-    req.session.user = req.body.email;
-    res.redirect("/");
-  } else {
-    res.end(" invalid email or password ");
-  }
+    const passwordIsValid = req.body.password === user.password;
+    if (passwordIsValid) {
+      req.session.user = req.body.email;
+      res.redirect("/");
+    }
+  });
 });
 
 app.get("/signup", (req, res) => {
