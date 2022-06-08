@@ -60,17 +60,17 @@
         <div class="card-header">Login Admin</div>
         <div class="card-body">
           <div class="justify-content-evenly">
-            <form method="post" action="/login">
+            <form method="POST" action="/login">              
               <div class="mb-3">
                 <label for="email" class="form-label"
-                  >Email address</label
+                  >username</label
                 >
                 <input
-                  type="email"
+                  type="text"
                   class="form-control"
-                  id="email"
+                  id="name"
                   aria-describedby="email"
-                  name="email"
+                  name="name"
                   required
                 />
                 <div id="email" class="form-text">
@@ -92,7 +92,7 @@
               <div class="mb-3">
                 <div id="emailHelp" class="form-text">
                   jika belum punya akses,
-                  <a href="/signup">klik disini</a>
+                  <a href="/register">klik disini</a>
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Login</button>

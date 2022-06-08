@@ -4,10 +4,9 @@ const methodOverride = require("method-override");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
+const passport = require("./lib/passport");
 const { v4: uuidv4 } = require("uuid");
 const router = require("./router");
-const { Adminuser } = require("./models");
-const req = require("express/lib/request");
 
 const PORT = 8080;
 
@@ -34,47 +33,10 @@ app.use(flash());
 // Static files
 app.use(express.static("public"));
 
-// app.get("/login", (req, res) => {
-//   const alertSuccess = req.flash("alertSuccess");
-//   res.render("login/login", { alertSuccess });
-// });
-
-// app.post("/login", (req, res) => {
-//   Adminuser.findOne({
-//     where: {
-//       email: req.body.email,
-//       password: req.body.password,
-//     },
-//   }).then((user) => {
-//     if (!user) {
-//       res.end(" invalid email or password ");
-//     }
-
-//     const passwordIsValid = req.body.password === user.password;
-//     if (passwordIsValid) {
-//       req.session.user = req.body.email;
-//       res.redirect("/");
-//     }
-//   });
-// });
-
-// app.get("/signup", (req, res) => {
-//   res.render("login/signup");
-// });
-
-// app.post("/signup", (req, res) => {
-//   Adminuser.create({
-//     name: req.body.name,
-//     email: req.body.email,
-//     password: req.body.password,
-//   }).then((admin) => {
-//     req.flash("alertSuccess", "Daftar Admin Berhasil, Silahkan Login");
-//     res.redirect("/login");
-//   });
-// });
-
 // Set Templating Engine
 app.use(expressLayouts);
+app.use(passport.initialize());
+app.use(passport.session());
 app.set("layout", "./layouts/app");
 app.set("view engine", "ejs");
 
@@ -88,5 +50,5 @@ app.use((req, res, next) => {
 app.use(router);
 
 app.listen(PORT, () => {
-  console.log(`Listening on http://localhost:${PORT}/home`);
+  console.log(`Listening on http://localhost:${PORT}`);
 });

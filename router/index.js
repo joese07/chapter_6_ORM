@@ -1,36 +1,23 @@
-const express = require("express");
-const gameuserController = require("../controllers/gameuserController");
-const historiesuserController = require("../controllers/historiesuserController");
-const { Historiesuser, Gameuser } = require("../models");
-const router = express.Router();
+const router = require("express").Router();
+const webRouter = require("./web");
+const apiRouter = require("./api");
+const authController = require("../controllers/authController");
+const restrict = require("../middlewares/restrict");
 
-//Session home
-router.get("/", (req, res) => {
-  res.render("pages/home");
+router.get("/", restrict, (req, res) => res.render("pages/home"));
+
+router.use("/", webRouter);
+router.use("/api", restrict, apiRouter);
+router.get("/register", (req, res) => res.render("login/signup"));
+router.post("/register", authController.register);
+router.get("/login", (req, res) => {
+  const alertSuccess = req.flash("alertSuccess");
+  try {
+    res.render("login/login", { alertSuccess });
+  } catch (err) {
+    res.status(422).json("error");
+  }
 });
-router.get("/home", (req, res) => {
-  res.render("pages/home/index");
-});
-
-//Session Usergame
-router.get("/gameusers", gameuserController.home);
-router.post("/gameuser", gameuserController.store);
-router.get("/gameusers/create", (req, res) =>
-  res.render("pages/users/create", { pageTitle: "Create User" })
-);
-router.get("/gameusers/:id", gameuserController.show);
-router.get("/gameusers/:id/edit", gameuserController.showUpdate);
-router.put("/gameusers/:id", gameuserController.update);
-router.delete("/gameusers/:id", gameuserController.destroy);
-
-//Session Historygame
-router.get("/histories", historiesuserController.home);
-router.get("/histories/create", historiesuserController.create);
-router.post("/histories", historiesuserController.store);
-
-router.get("/histories/:id", historiesuserController.show);
-router.get("/histories/:id/edit", historiesuserController.showUpdate);
-router.put("/histories/:id", historiesuserController.update);
-router.delete("/histories/:id", historiesuserController.destroy);
+router.post("/login", authController.login);
 
 module.exports = router;

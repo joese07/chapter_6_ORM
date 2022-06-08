@@ -1,4 +1,4 @@
-const { Gameuser } = require("../models");
+const { Gameuser } = require("../../models");
 
 module.exports = {
   home: (req, res) => {
