@@ -34,44 +34,44 @@ app.use(flash());
 // Static files
 app.use(express.static("public"));
 
-app.get("/login", (req, res) => {
-  const alertSuccess = req.flash("alertSuccess");
-  res.render("login/login", { alertSuccess });
-});
+// app.get("/login", (req, res) => {
+//   const alertSuccess = req.flash("alertSuccess");
+//   res.render("login/login", { alertSuccess });
+// });
 
-app.post("/login", (req, res) => {
-  Adminuser.findOne({
-    where: {
-      email: req.body.email,
-      password: req.body.password,
-    },
-  }).then((user) => {
-    if (!user) {
-      res.end(" invalid email or password ");
-    }
+// app.post("/login", (req, res) => {
+//   Adminuser.findOne({
+//     where: {
+//       email: req.body.email,
+//       password: req.body.password,
+//     },
+//   }).then((user) => {
+//     if (!user) {
+//       res.end(" invalid email or password ");
+//     }
 
-    const passwordIsValid = req.body.password === user.password;
-    if (passwordIsValid) {
-      req.session.user = req.body.email;
-      res.redirect("/");
-    }
-  });
-});
+//     const passwordIsValid = req.body.password === user.password;
+//     if (passwordIsValid) {
+//       req.session.user = req.body.email;
+//       res.redirect("/");
+//     }
+//   });
+// });
 
-app.get("/signup", (req, res) => {
-  res.render("login/signup");
-});
+// app.get("/signup", (req, res) => {
+//   res.render("login/signup");
+// });
 
-app.post("/signup", (req, res) => {
-  Adminuser.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-  }).then((admin) => {
-    req.flash("alertSuccess", "Daftar Admin Berhasil, Silahkan Login");
-    res.redirect("/login");
-  });
-});
+// app.post("/signup", (req, res) => {
+//   Adminuser.create({
+//     name: req.body.name,
+//     email: req.body.email,
+//     password: req.body.password,
+//   }).then((admin) => {
+//     req.flash("alertSuccess", "Daftar Admin Berhasil, Silahkan Login");
+//     res.redirect("/login");
+//   });
+// });
 
 // Set Templating Engine
 app.use(expressLayouts);
