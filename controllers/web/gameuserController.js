@@ -1,6 +1,25 @@
 const { Gameuser } = require("../../models");
 
 module.exports = {
+  register: async (req, res) => {
+    try {
+      await Gameuser.register(req.body);
+      res.redirect("/arena/login");
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  login: async (req, res) => {
+    const user = await Gameuser.authenticate(req.body);
+    const { id, username } = user;
+    res.json({
+      id,
+      username,
+      accessToken: user.generateToken(),
+    });
+  },
+
   home: (req, res) => {
     const alertSuccess = req.flash("alertSuccess");
 
@@ -19,30 +38,32 @@ module.exports = {
       });
   },
 
-  store: (req, res) => {
-    let dateOfBirth;
-    if (!req.body.tanggal_lahir) {
-      dateOfBirth = null;
-    } else {
-      dateOfBirth = req.body.tanggal_lahir;
-    }
+  // store: (req, res) => {
+  //   let dateOfBirth;
+  //   if (!req.body.tanggal_lahir) {
+  //     dateOfBirth = null;
+  //   } else {
+  //     dateOfBirth = req.body.tanggal_lahir;
+  //   }
 
-    Gameuser.create({
-      name: req.body.name,
-      placeOfBirth: req.body.tempat_lahir,
-      dateOfBirth,
-      address: req.body.alamat,
-      email: req.body.email,
-      phoneNumber: req.body.no_telepon,
-    })
-      .then(() => {
-        req.flash("alertSuccess", "Berhasil tambah data game user");
-        res.redirect("/gameusers");
-      })
-      .catch((err) => {
-        res.status(422).json(" can't create user");
-      });
-  },
+  //   Gameuser.create({
+  //     name: req.body.name,
+  //     username: req.body.username,
+  //     password: req.body.password,
+  //     placeOfBirth: req.body.tempat_lahir,
+  //     dateOfBirth,
+  //     address: req.body.alamat,
+  //     email: req.body.email,
+  //     phoneNumber: req.body.no_telepon,
+  //   })
+  //     .then(() => {
+  //       req.flash("alertSuccess", "Berhasil tambah data game user");
+  //       res.redirect("/gameusers");
+  //     })
+  //     .catch((err) => {
+  //       res.status(422).json(" can't create user");
+  //     });
+  // },
 
   show: (req, res) => {
     Gameuser.findOne({

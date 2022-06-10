@@ -4,7 +4,7 @@ const apiRouter = require("./api");
 const authController = require("../controllers/authController");
 const restrict = require("../middlewares/restrict");
 
-router.get("/", restrict, (req, res) => res.render("pages/home"));
+router.get("/admin", restrict, (req, res) => res.render("pages/home"));
 
 router.use("/", webRouter);
 router.use("/api", restrict, apiRouter);
