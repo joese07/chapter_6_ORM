@@ -12,7 +12,7 @@ module.exports = {
   },
 
   login: passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/admin",
     failureRedirect: "/login",
     failureFlash: true,
   }),
