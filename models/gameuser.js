@@ -44,13 +44,14 @@ module.exports = (sequelize, DataTypes) => {
     static async authenticate({ username, password }) {
       try {
         const Gameuser = await this.findOne({ where: { username } });
-        if (!Gameuser) return Promise.reject(" user not Found");
+        if (!Gameuser) return Promise.reject("  Password / Username Invalid ");
 
         const isPasswordValid = await bcrypt.compare(
           password,
           Gameuser.password
         );
-        if (!isPasswordValid) return Promise.reject(" Wrong Password");
+        if (!isPasswordValid)
+          return Promise.reject(" Password / Username Invalid ");
 
         return Promise.resolve(Gameuser);
       } catch (err) {

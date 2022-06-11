@@ -10,14 +10,25 @@ module.exports = {
     }
   },
 
-  login: async (req, res) => {
-    const user = await Gameuser.authenticate(req.body);
-    const { id, username } = user;
-    res.json({
-      id,
-      username,
-      accessToken: user.generateToken(),
-    });
+  login: async (req, res, next) => {
+    try {
+      await Gameuser.authenticate(req.body);
+      res.redirect("/arena/dashboard");
+    } catch (err) {
+      next(err);
+    }
+    // const user = await Gameuser.authenticate(req.body);
+    // res.redirect("/arena/dashboard");
+    // const { id, username } = user;
+    // res.json({
+    //   id,
+    //   username,
+    //   accessToken: user.generateToken(),
+    // });
+  },
+
+  whoami: (req, res) => {
+    res.render("pages/game/dashboard", { pageTitle: "berhasil login" });
   },
 
   home: (req, res) => {

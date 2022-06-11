@@ -2,6 +2,7 @@ const express = require("express");
 const gameuserController = require("../controllers/web/gameuserController");
 const historiesuserController = require("../controllers/web/historiesuserController");
 const restrict = require("../middlewares/restrict");
+const restrict_jwt = require("../middlewares/restrict_jwt");
 
 const router = express.Router();
 
@@ -31,9 +32,7 @@ router.get("/arena/login", (req, res) => {
   res.render("pages/game/login", { pageTitle: "login player" });
 });
 
-router.get("/arena/dashboard", (req, res) => {
-  res.render("pages/game/dashboard", { pageTitle: "main dashboard" });
-});
+router.get("/arena/dashboard", restrict_jwt, gameuserController.whoami);
 router.post("/gameuser", gameuserController.register);
 router.get("/arena/create/user", (req, res) => {
   res.render("pages/game/signup", { pageTitle: " Create user" });
