@@ -5,7 +5,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const passport = require("./lib/passport");
-
+const passport_jwt = require("./lib/passport_jwt");
 const { v4: uuidv4 } = require("uuid");
 const router = require("./router");
 
@@ -36,6 +36,7 @@ app.use(express.static("public"));
 
 // Set Templating Engine
 app.use(expressLayouts);
+app.use(passport_jwt.initialize())
 app.use(passport.initialize());
 app.use(passport.session());
 app.set("layout", "./layouts/app");
