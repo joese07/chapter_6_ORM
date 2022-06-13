@@ -25,9 +25,9 @@
   </head>
   <body>
     <% if (url.includes('/arena/login') || url.includes('/arena/dashboard') ||
-    url.includes('/arena/create/user')) { %> <%-
-    include('../partials/header_arena.ejs') %> <% } else { %> <%-
-    include('../partials/header.ejs') %> <% } %>
+    url.includes('/arena/create/user')) { %>
+    <header><%-include('../partials/header_arena.ejs') %></header>
+    <% } else { %> <%- include('../partials/header.ejs') %> <% } %>
     <main>
       <div class="container"><%- body %></div>
     </main>

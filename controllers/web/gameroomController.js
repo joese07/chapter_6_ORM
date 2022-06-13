@@ -1,4 +1,13 @@
-const { Room, Gameuser } = require("../../models");
+const { Room, Gameuser, HistoriGame } = require("../../models");
+
+const wait = {};
+const data = {};
+
+function waitEnemyResponse(id) {
+  return new Promise((resolve) => {
+    wait[id] = { resolve };
+  });
+}
 
 module.exports = {
   createRoom: (req, res) => {
@@ -31,5 +40,54 @@ module.exports = {
     }
   },
 
-  playgame: async (req, res) => {},
+  playgame: async (req, res) => {
+    const id = req.params.id;
+    const playerSatu = req.body.choose;
+    const playerDua = req.body.choose;
+    let hasil = null;
+
+    if (playerSatu === "BATU" && playerDua === "GUNTING") {
+      hasil = "Player 1 Win";
+    } else if (playerSatu === "GUNTING" && playerDua === "KERTAS") {
+      hasil = "Player 1 Win";
+    } else if (playerSatu === "KERTAS" && playerDua === "BATU") {
+      hasil = "player 1 win";
+    } else if (playerSatu === "GUNTING" && playerDua === "BATU") {
+      hasil = "player 2 win";
+    } else if (playerSatu === "KERTAS" && playerDua === "GUNTING") {
+      hasil = "player 2 win";
+    } else if (playerSatu === "BATU" && playerDua === "KERTAS") {
+      hasil = "player 2 win";
+    } else {
+      hasil = "DRAW";
+    }
+
+    if (!data[id]) {
+      data[id] = {
+        player1: playerSatu,
+        player2: null,
+        result: hasil,
+      };
+    } else {
+      data[id].player2 = playerDua;
+    }
+
+    if (!wait[id]) {
+      await waitEnemyResponse(id);
+    } else {
+      wait[id].resolve();
+      delete wait[id];
+    }
+
+    HistoriGame.create({
+      player_one: playerSatu,
+      player_two: playerDua,
+      result: hasil,
+    }).then((data) => {
+      res.json(data);
+    });
+
+    res.json(data[id]);
+    return hasil;
+  },
 };

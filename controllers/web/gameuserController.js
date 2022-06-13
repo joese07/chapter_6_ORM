@@ -55,33 +55,6 @@ module.exports = {
       });
   },
 
-  // store: (req, res) => {
-  //   let dateOfBirth;
-  //   if (!req.body.tanggal_lahir) {
-  //     dateOfBirth = null;
-  //   } else {
-  //     dateOfBirth = req.body.tanggal_lahir;
-  //   }
-
-  //   Gameuser.create({
-  //     name: req.body.name,
-  //     username: req.body.username,
-  //     password: req.body.password,
-  //     placeOfBirth: req.body.tempat_lahir,
-  //     dateOfBirth,
-  //     address: req.body.alamat,
-  //     email: req.body.email,
-  //     phoneNumber: req.body.no_telepon,
-  //   })
-  //     .then(() => {
-  //       req.flash("alertSuccess", "Berhasil tambah data game user");
-  //       res.redirect("/gameusers");
-  //     })
-  //     .catch((err) => {
-  //       res.status(422).json(" can't create user");
-  //     });
-  // },
-
   show: (req, res) => {
     Gameuser.findOne({
       where: { id: req.params.id },
