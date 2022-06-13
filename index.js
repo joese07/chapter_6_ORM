@@ -38,6 +38,7 @@ app.use(express.static("public"));
 app.use(expressLayouts);
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.set("layout", "./layouts/app");
 app.set("view engine", "ejs");
 
