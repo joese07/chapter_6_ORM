@@ -41,6 +41,18 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
+    
+    generateToken() {
+      const payload = {
+        id: this.id,
+        username: this.username,
+      };
+      const rahasia = "ini rahasia ga boleh disebar";
+
+      const token = jwt.sign(payload, rahasia);
+      return token;
+    }
+
     static async authenticate({ username, password }) {
       try {
         const Gameuser = await this.findOne({ where: { username } });
@@ -59,16 +71,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
 
-    generateToken() {
-      const payload = {
-        id: this.id,
-        username: this.username,
-      };
-      const rahasia = "ini rahasia ga boleh disebar";
-
-      const token = jwt.sign(payload, rahasia);
-      return token;
-    }
   }
 
   Gameuser.init(
